@@ -100,9 +100,9 @@ class Field:
 
     def toarray(self):
         return np.concatenate((
-                np.reshape(self.field_x, self.N),
-                np.reshape(self.field_y, self.N),
-                np.reshape(self.field_z, self.N)
+                np.reshape(self.field_x, self.N, order='F'),
+                np.reshape(self.field_y, self.N, order='F'),
+                np.reshape(self.field_z, self.N, order='F')
             ))
 
     def fromarray(self, arr):
@@ -110,9 +110,9 @@ class Field:
             raise ValueError('Can only assign 1d array to a Field')
         if len(arr) != 3*self.N:
             raise ValueError('Can only assign to a field an array of size 3*Nx*Ny*Nz')
-        self.field_x = np.reshape(arr[0:self.N], (self.Nx, self.Ny, self.Nz))
-        self.field_y = np.reshape(arr[self.N: 2*self.N], (self.Nx, self.Ny, self.Nz))
-        self.field_z = np.reshape(arr[2*self.N:3*self.N], (self.Nx, self.Ny, self.Nz))
+        self.field_x = np.reshape(arr[0:self.N], (self.Nx, self.Ny, self.Nz), order='F')
+        self.field_y = np.reshape(arr[self.N: 2*self.N], (self.Nx, self.Ny, self.Nz), order='F')
+        self.field_z = np.reshape(arr[2*self.N:3*self.N], (self.Nx, self.Ny, self.Nz), order='F')
 
     def compute_ijk(self, n):
         if n > (self.N):
@@ -123,6 +123,7 @@ class Field:
         j = (n-k*self.Nx*self.Ny)//self.Nx
 
         return i, j, k
+
 
 class Field2D:
     '''
